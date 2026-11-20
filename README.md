@@ -31,6 +31,7 @@ import asyncio
 import aiohttp
 from aioprotegewx import ProtegeClient
 
+
 async def main() -> None:
     # The controller issues its own session cookie, so give the client a jar that accepts it.
     async with aiohttp.ClientSession(cookie_jar=aiohttp.CookieJar(unsafe=True)) as session:
@@ -42,6 +43,7 @@ async def main() -> None:
             await client.arm_area(16, "stay")
         finally:
             await client.close()  # logs out
+
 
 asyncio.run(main())
 ```
