@@ -1,0 +1,74 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "aioprotegewx"
+dynamic = ["version"]
+description = "Async client for ICT Protege WX alarm and access controllers through their web interface"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE", "NOTICE"]
+authors = [{ name = "Oliver Maller" }]
+requires-python = ">=3.12"
+dependencies = ["aiohttp>=3.9", "cryptography>=42", "yarl>=1.9"]
+keywords = ["ict", "protege", "alarm", "access-control", "home-assistant", "asyncio"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Framework :: AsyncIO",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Home Automation",
+  "Topic :: Security",
+  "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/olliemaller/aioprotegewx"
+Issues = "https://github.com/olliemaller/aioprotegewx/issues"
+Changelog = "https://github.com/olliemaller/aioprotegewx/blob/main/CHANGELOG.md"
+
+[project.scripts]
+aioprotegewx = "aioprotegewx.__main__:main"
+
+[project.optional-dependencies]
+test = ["pytest>=8", "pytest-asyncio>=0.24", "pytest-cov>=5"]
+lint = ["ruff>=0.8", "mypy>=1.13"]
+
+[tool.hatch.version]
+path = "src/aioprotegewx/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/aioprotegewx"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+
+[tool.coverage.report]
+fail_under = 95
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "SIM", "RUF", "ASYNC", "PT"]
+ignore = ["S101", "S104", "ASYNC109", "E501"]
+
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+known-first-party = ["aioprotegewx"]
+
+[tool.mypy]
+strict = true
+python_version = "3.12"
+files = ["src"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S105", "S106", "S107", "S311", "S324", "E501", "ASYNC110", "PT011", "PT018"]
