@@ -111,6 +111,10 @@ def test_parse(text: str, kind: str, subject: str | None, event_type: str, extra
         ("2026/11/20 15:04:05 Area House Armed", datetime(2026, 11, 20, 15, 4, 5)),
         ("99/99/9999 15:04:05 Area House Armed", None),
         ("no timestamp here", None),
+        # the weekday decides day/month: 4 March 2026 was a Wednesday, 3 April a Friday
+        ("Wed 03/04/2026 15:04:05 Area House Armed", datetime(2026, 3, 4, 15, 4, 5)),
+        ("Fri 03/04/2026 15:04:05 Area House Armed", datetime(2026, 4, 3, 15, 4, 5)),
+        ("Mon 03/04/2026 15:04:05 Area House Armed", datetime(2026, 4, 3, 15, 4, 5)),
     ],
 )
 def test_timestamps(line: str, when: datetime | None) -> None:

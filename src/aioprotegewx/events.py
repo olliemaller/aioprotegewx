@@ -23,7 +23,8 @@ import re
 from typing import Any
 
 _DATE_FORMATS = ("%d/%m/%Y %H:%M:%S", "%m/%d/%Y %H:%M:%S", "%Y-%m-%d %H:%M:%S", "%Y/%m/%d %H:%M:%S")
-_STAMP = re.compile(r"^(?:[A-Za-z]{3}\s+)?(\S+\s+\d{1,2}:\d{2}:\d{2})\s+(.*)$")
+_STAMP = re.compile(r"^(?:([A-Za-z]{3})\s+)?(\S+\s+\d{1,2}:\d{2}:\d{2})\s+(.*)$")
+_WEEKDAYS = ("mon", "tue", "wed", "thu", "fri", "sat", "sun")
 _NOISE_PREFIXES = ("Output ", "Report In ", "Module ")
 
 # Event kinds
@@ -118,11 +119,20 @@ def parse_line(line: str) -> ProtegeEvent:
     line = line.strip()
     match = _STAMP.match(line)
     if match:
+        weekday, stamp, text = match.group(1), match.group(2), match.group(3).strip()
+        first: datetime | None = None
         for fmt in _DATE_FORMATS:
             try:
-                return ProtegeEvent(datetime.strptime(match.group(1), fmt), match.group(2).strip())
+                when = datetime.strptime(stamp, fmt)
             except ValueError:
                 continue
+            # 03/04 is 3 April or 4 March depending on the controller's date setting:
+            # the weekday the controller prints says which
+            if weekday is None or _WEEKDAYS[when.weekday()] == weekday.lower():
+                return ProtegeEvent(when, text)
+            first = first or when
+        if first is not None:
+            return ProtegeEvent(first, text)
     return ProtegeEvent(None, line)
 
 

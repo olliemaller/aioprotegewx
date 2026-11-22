@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1
+
+- Fixed: on a controller set to month/day dates, event times from the 1st to the 12th of a month were read as day/month (4 March became 3 April). The weekday the controller prints in front of each event now decides which it is.
+
 ## 0.1.0
 
 First release, moved out of the [ICT Protege WX integration for Home Assistant](https://github.com/olliemaller/ha-protege-wx) so it can be used on its own.
