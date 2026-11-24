@@ -211,6 +211,8 @@ async def test_controls_change_state(server_factory):
         assert (await client.output_status())[120].is_on
         with pytest.raises(ValueError):
             await client.arm_area(16, "stay", force=True)
+        with pytest.raises(ValueError):
+            await client.set_bypass(3, "sometimes")
     finally:
         await client.close()
         await session.close()

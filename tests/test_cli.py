@@ -36,3 +36,31 @@ def test_error_exits(capsys, monkeypatch) -> None:
     with pytest.raises(SystemExit):
         main(["-v", "status", "h", "--username", "u", "--password", "p"])
     assert "error: nope" in capsys.readouterr().err
+
+
+@pytest.mark.parametrize(
+    ("argv", "env", "prompted", "expected"),
+    [
+        (["--password", "p"], "e", False, "p"),
+        ([], "e", False, "e"),
+        ([], None, True, "typed"),
+    ],
+)
+def test_password_sources(argv, env, prompted, expected, monkeypatch) -> None:
+    import aioprotegewx.__main__ as cli
+
+    seen = {}
+
+    async def run(args) -> None:
+        seen["password"] = args.password
+
+    prompts = []
+    monkeypatch.setattr(cli, "_run", run)
+    monkeypatch.setattr(cli.getpass, "getpass", lambda prompt: prompts.append(prompt) or "typed")
+    if env is None:
+        monkeypatch.delenv("PROTEGE_PASSWORD", raising=False)
+    else:
+        monkeypatch.setenv("PROTEGE_PASSWORD", env)
+    main(["status", "h", "--username", "u", *argv])
+    assert seen["password"] == expected
+    assert bool(prompts) is prompted
