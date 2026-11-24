@@ -30,7 +30,7 @@ from .client import (
 from .events import EventParser, ParsedEvent, ProtegeEvent
 from .status import NO_RECORD, AreaStatus, DoorStatus, InputStatus, OutputStatus
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 __all__ = [
     "NO_RECORD",

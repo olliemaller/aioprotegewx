@@ -1,5 +1,9 @@
 # aioprotegewx
 
+[![PyPI](https://img.shields.io/pypi/v/aioprotegewx?style=for-the-badge&color=FFFFFF&labelColor=000000)](https://pypi.org/project/aioprotegewx/)
+[![Checks](https://img.shields.io/github/actions/workflow/status/olliemaller/aioprotegewx/ci.yml?branch=main&style=for-the-badge&label=checks&labelColor=000000)](https://github.com/olliemaller/aioprotegewx/actions/workflows/ci.yml)
+[![Licence](https://img.shields.io/github/license/olliemaller/aioprotegewx?style=for-the-badge&color=FFFFFF&labelColor=000000)](LICENSE)
+
 Async Python client for **ICT Protege WX** alarm and access controllers, through the controller's own **web interface**.
 
 ICT's official integration route, the Automation and Control service, needs a paid licence that many WX controllers don't have. Every WX has a web interface, and this library speaks the same encrypted protocol as its pages. If you can log in to the controller in a browser, you can use this.
@@ -61,9 +65,13 @@ A controller whose session table filled with abandoned sessions has been seen to
 ## Command line
 
 ```bash
-aioprotegewx status 192.168.1.10:7377 --username homeassistant --password ...
-aioprotegewx events 192.168.1.10:7377 --username homeassistant --password ...
+aioprotegewx status 192.168.1.10:7377 --username homeassistant
+aioprotegewx events 192.168.1.10:7377 --username homeassistant
 ```
+
+The tool asks for the password. To run it unattended, set the `PROTEGE_PASSWORD` environment variable instead.
+
+> **Warning:** `--password` still works, but the password then shows in your shell history and, while the tool runs, in the process list that other users on the computer can read. Use the prompt or `PROTEGE_PASSWORD` instead.
 
 ## Development
 

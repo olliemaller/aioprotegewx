@@ -2,8 +2,11 @@
 
 Examples::
 
-    aioprotegewx status 192.168.1.10:7377 --username homeassistant --password ...
-    aioprotegewx events 192.168.1.10:7377 --username homeassistant --password ...
+    aioprotegewx status 192.168.1.10:7377 --username homeassistant
+    PROTEGE_PASSWORD=... aioprotegewx events 192.168.1.10:7377 --username homeassistant
+
+The password comes from --password, else the PROTEGE_PASSWORD environment
+variable, else a prompt.
 """
 
 from __future__ import annotations
@@ -12,8 +15,10 @@ import argparse
 import asyncio
 from collections.abc import Sequence
 from dataclasses import asdict
+import getpass
 import json
 import logging
+import os
 import sys
 from typing import Any
 
@@ -62,8 +67,14 @@ def main(argv: Sequence[str] | None = None) -> None:
         cmd = sub.add_parser(name, help=text)
         cmd.add_argument("host", help="address and port, e.g. 192.168.1.10:7377")
         cmd.add_argument("--username", required=True)
-        cmd.add_argument("--password", required=True)
+        cmd.add_argument(
+            "--password",
+            help="shows in your shell history and process list; "
+            "prefer PROTEGE_PASSWORD or the prompt",
+        )
     args = parser.parse_args(argv)
+    if args.password is None:
+        args.password = os.environ.get("PROTEGE_PASSWORD") or getpass.getpass("Password: ")
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.WARNING)
     try:
         asyncio.run(_run(args))

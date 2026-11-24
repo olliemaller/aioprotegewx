@@ -548,11 +548,14 @@ class ProtegeClient:
         await self.control(TBL_DOORS, door_id, DOOR_UNLOCK_LATCHED if latched else DOOR_UNLOCK)
 
     async def set_bypass(self, input_id: int, mode: str) -> None:
-        command = {
-            "none": INPUT_UNBYPASS,
-            "temporary": INPUT_BYPASS,
-            "permanent": INPUT_BYPASS_PERMANENT,
-        }[mode]
+        try:
+            command = {
+                "none": INPUT_UNBYPASS,
+                "temporary": INPUT_BYPASS,
+                "permanent": INPUT_BYPASS_PERMANENT,
+            }[mode]
+        except KeyError as err:
+            raise ValueError(f"unknown bypass mode {mode!r}") from err
         await self.control(TBL_INPUTS, input_id, command)
 
     async def set_output(self, output_id: int, on: bool, seconds: int | None = None) -> None:
