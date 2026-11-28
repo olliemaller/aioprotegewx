@@ -2,7 +2,9 @@
 
 [![PyPI](https://img.shields.io/pypi/v/aioprotegewx?style=for-the-badge&color=FFFFFF&labelColor=000000)](https://pypi.org/project/aioprotegewx/)
 [![Checks](https://img.shields.io/github/actions/workflow/status/olliemaller/aioprotegewx/ci.yml?branch=main&style=for-the-badge&label=checks&labelColor=000000)](https://github.com/olliemaller/aioprotegewx/actions/workflows/ci.yml)
-[![Licence](https://img.shields.io/github/license/olliemaller/aioprotegewx?style=for-the-badge&color=FFFFFF&labelColor=000000)](LICENSE)
+[![Licence](https://img.shields.io/github/license/olliemaller/aioprotegewx?style=for-the-badge&label=licence&color=FFFFFF&labelColor=000000)](https://github.com/olliemaller/aioprotegewx/blob/main/LICENSE)
+[![Read the write-up](https://img.shields.io/badge/Read-the%20write--up-FFFFFF?style=for-the-badge&labelColor=000000)](https://maller.com.au/projects/protege-wx/)
+[![maller.com.au](https://img.shields.io/badge/Site-maller.com.au-FFFFFF?style=for-the-badge&labelColor=000000)](https://maller.com.au/)
 
 Async Python client for **ICT Protege WX** alarm and access controllers, through the controller's own **web interface**.
 
